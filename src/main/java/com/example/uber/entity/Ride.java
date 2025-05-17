@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import org.springframework.stereotype.Controller;
 
 @Entity
 @Table(name = "ride")
@@ -18,24 +17,46 @@ public class Ride {
     private long id;
 
     @NonNull
-    @Column(name = "sourceLocation")
-    
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(name = "source_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "source_longitude"))
+    })
     private Location sourceLocation;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(name = "destination_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "destination_longitude"))
+    })
     private Location destinationLocation;
-    private Rider rider;
-    private User user;
+
+    @NonNull
+    @Column(name = "rider_id")
+    private Long riderId;
+
+    @NonNull
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Enumerated(EnumType.STRING)
     private RideStatus rideStatus;
-    private Vehicle vehicle;
 
 
 
-    Ride(Location sourceLocation,Location destinationLocation,Rider rider,User user,RideStatus rideStatus,Vehicle vehicle){
+    @NonNull
+    @Column(name = "fare")
+    private  double fare;
+
+
+
+    public Ride(Location sourceLocation, Location destinationLocation, Long riderId, Long userId, RideStatus rideStatus, double ridefare){
         this.sourceLocation = sourceLocation;
         this.destinationLocation = destinationLocation;
-        this.rider = rider;
-        this.user = user;
+        this.riderId = riderId;
+        this.userId = userId;
         this.rideStatus = rideStatus;
-        this.vehicle = vehicle;
+        this.fare = ridefare;
 
     }
 

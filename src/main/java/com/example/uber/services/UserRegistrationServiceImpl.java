@@ -4,7 +4,7 @@ import com.example.uber.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("userRegistration")
 public class UserRegistrationServiceImpl implements RegistrationService<User> {
 
     private  final UserRepository userRepository;
